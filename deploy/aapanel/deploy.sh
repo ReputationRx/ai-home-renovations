@@ -30,9 +30,7 @@ echo "==> Building Next.js standalone app"
 npm run build
 
 echo "==> Syncing standalone build to app/"
-rsync -a --delete \
-  .next/standalone/ "${SITE_ROOT}/app/" \
-  --exclude node_modules
+rsync -a --delete .next/standalone/ "${SITE_ROOT}/app/"
 rsync -a --delete .next/static "${SITE_ROOT}/app/.next/static"
 rsync -a --delete public/ "${SITE_ROOT}/app/public/"
 
