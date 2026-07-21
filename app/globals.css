@@ -1,8 +1,84 @@
 @import "tailwindcss";
 
+/**
+ * Class-based dark mode (matches ThemeProvider: `document.documentElement.classList.add('dark')`).
+ * Without this, Tailwind v4 defaults `dark:` to `prefers-color-scheme` only — toggling the theme
+ * updates CSS variables but NOT `dark:*` utilities, so text stays light-theme colors on dark UI.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0a0a0a;
+  
+  /* Premium Navy Blue Palette */
+  --primary-50: #f0f4f8;
+  --primary-100: #d9e2ec;
+  --primary-200: #bcccdc;
+  --primary-300: #9fb3c8;
+  --primary-400: #829ab1;
+  --primary-500: #627d98;
+  --primary-600: #486581;
+  --primary-700: #334e68;
+  --primary-800: #243b53;
+  --primary-900: #102a43;
+  
+  /* Bold Red Accent to match logo */
+  --accent-50: #dc2626;
+  --accent-100: #dc2626;
+  --accent-200: #dc2626;
+  --accent-300: #dc2626;
+  --accent-400: #dc2626;
+  --accent-500: #dc2626;
+  --accent-600: #dc2626;
+  --accent-700: #dc2626;
+  
+  /* Elegant Grays */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+}
+
+.dark {
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  
+  /* Dark mode primary colors - lighter shades for contrast */
+  --primary-50: #1e293b;
+  --primary-100: #334155;
+  --primary-200: #475569;
+  --primary-300: #64748b;
+  --primary-400: #94a3b8;
+  --primary-500: #cbd5e1;
+  --primary-600: #e2e8f0;
+  --primary-700: #f1f5f9;
+  --primary-800: #f8fafc;
+  --primary-900: #ffffff;
+  
+  /* Red accent remains vibrant in dark mode */
+  --accent-400: #dc2626;
+  --accent-500: #dc2626;
+  --accent-600: #dc2626;
+  --accent-700: #dc2626;
+  
+  /* Dark mode grays - inverted */
+  --gray-50: #1f2937;
+  --gray-100: #374151;
+  --gray-200: #4b5563;
+  --gray-300: #6b7280;
+  --gray-400: #9ca3af;
+  --gray-500: #d1d5db;
+  --gray-600: #e5e7eb;
+  --gray-700: #f3f4f6;
+  --gray-800: #f9fafb;
+  --gray-900: #ffffff;
 }
 
 @theme inline {
@@ -10,17 +86,262 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-primary-50: var(--primary-50);
+  --color-primary-100: var(--primary-100);
+  --color-primary-200: var(--primary-200);
+  --color-primary-300: var(--primary-300);
+  --color-primary-400: var(--primary-400);
+  --color-primary-500: var(--primary-500);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
+  --color-primary-800: var(--primary-800);
+  --color-primary-900: var(--primary-900);
+  --color-accent-50: var(--accent-50);
+  --color-accent-100: var(--accent-100);
+  --color-accent-200: var(--accent-200);
+  --color-accent-300: var(--accent-300);
+  --color-accent-400: var(--accent-400);
+  --color-accent-500: var(--accent-500);
+  --color-accent-600: var(--accent-600);
+  --color-accent-700: var(--accent-700);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-feature-settings: 'kern' 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  /* Improve touch scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
+}
+
+/**
+ * Default typography — `:where()` keeps specificity at 0 so Tailwind `text-*`
+ * utilities (including `dark:*`) always win. Plain global `h2` / `.dark h2` rules
+ * were tying or beating utilities and forced dark gray headings on dark backgrounds.
+ */
+:where(h1, h2, h3, h4, h5, h6) {
+  color: var(--foreground);
+}
+
+.dark :where(h1, h2, h3, h4, h5, h6) {
+  color: #f1f5f9;
+}
+
+/**
+ * Body copy defaults — do NOT target `span` globally (breaks utilities in headings).
+ */
+:where(p, li, label) {
+  color: var(--foreground);
+}
+
+.dark :where(p, li, label) {
+  color: #e2e8f0;
+}
+
+/* Accessible focus styles */
+:focus-visible {
+  outline: 3px solid var(--accent-500);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Improve touch targets on mobile */
+@media (max-width: 768px) {
+  a, button, input, select, textarea {
+    min-height: 44px;
+  }
+  
+  /* Allow smaller touch targets for icons in specific contexts */
+  .icon-only {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Smooth scrolling for better UX */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent layout shift from images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--accent-600);
+  color: white;
+  padding: 8px 12px;
+  z-index: 100;
+  border-radius: 0 0 6px 6px;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus-visible {
+  top: 0;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .gradient-text {
+    background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-900) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .accent-red {
+    color: var(--accent-500);
+  }
+  
+  /* Improved color contrast for accessibility */
+  @media (prefers-contrast: high) {
+    :root {
+      --accent-600: #dc2626;
+      --accent-700: #dc2626;
+    }
+  }
+  
+  .gradient-accent {
+    background: linear-gradient(135deg, var(--accent-400) 0%, var(--accent-600) 100%);
+  }
+  
+  .premium-shadow {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+  
+  .premium-shadow-lg {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+  
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  .dark .glass-effect {
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  .section-padding {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  @media (min-width: 640px) {
+    .section-padding {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .section-padding {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .section-padding {
+      padding-top: 8rem;
+      padding-bottom: 8rem;
+    }
+  }
+  
+  .premium-shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+  
+  @keyframes blob {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+  }
+  
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+  
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  /* Header — subtle phone ring attention (red theme) */
+  @keyframes nav-phone-ring {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.45);
+    }
+    50% {
+      box-shadow: 0 0 0 6px rgba(220, 38, 38, 0);
+    }
+  }
+
+  .nav-call-btn {
+    animation: nav-phone-ring 2.5s ease-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-call-btn {
+      animation: none;
+    }
+    .nav-phone-icon {
+      animation: none !important;
+    }
+  }
+
+  @keyframes nav-phone-shake {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    20% {
+      transform: rotate(-10deg);
+    }
+    40% {
+      transform: rotate(10deg);
+    }
+    60% {
+      transform: rotate(-6deg);
+    }
+    80% {
+      transform: rotate(6deg);
+    }
+  }
+
+  .nav-phone-icon {
+    animation: nav-phone-shake 2.8s ease-in-out infinite;
+    animation-delay: 0.5s;
+  }
+
+  .group\/call:hover .nav-phone-icon,
+  .group\/call:focus-visible .nav-phone-icon {
+    animation: nav-phone-shake 0.45s ease-in-out infinite;
+  }
 }
