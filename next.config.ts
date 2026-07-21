@@ -3,6 +3,7 @@ import path from "path";
 import { WORDPRESS_REDIRECTS } from "./lib/wordpress-migration";
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
   /** Match WordPress permalink style (e.g. /kitchens/). */
   trailingSlash: true,
   images: {
