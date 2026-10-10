@@ -26,6 +26,18 @@ export const WORDPRESS_CATEGORY_LABELS: Record<WordPressCategorySlug, string> = 
   painting: 'Painting',
 }
 
+/**
+ * Rank Math category-sitemap.xml only lists archives that have posts.
+ * Empty terms still return 200 (keep generating pages) but must not be sitemap'd.
+ */
+export const WORDPRESS_INDEXED_CATEGORY_SLUGS = [
+  'uncategorized',
+  'kitchens',
+  'interiors',
+] as const satisfies readonly WordPressCategorySlug[]
+
+export type WordPressIndexedCategorySlug = (typeof WORDPRESS_INDEXED_CATEGORY_SLUGS)[number]
+
 /** Every path that should return 200 on the Next.js site (no leading slash on ''). */
 export const WORDPRESS_CANONICAL_PATHS = [
   '',
@@ -41,6 +53,7 @@ export const WORDPRESS_CANONICAL_PATHS = [
   '/blog',
   '/coming-soon',
   '/elementor-landing-page-825',
+  '/service-areas',
   ...WORDPRESS_CATEGORY_SLUGS.map((s) => `/category/${s}`),
   '/how-to-choose-a-paint-color-for-your-walls-when-remodeling',
   '/the-hesitant-homeowner-what-makes-us-delay-remodeling',
@@ -48,7 +61,13 @@ export const WORDPRESS_CANONICAL_PATHS = [
   '/common-problems-you-might-encounter-when-remodeling',
 ] as const
 
-/** 301 redirects for legacy / alternate URLs (sources without trailing slash; Next adds slash when trailingSlash is true). */
+/**
+ * 301 redirects for legacy / alternate URLs (sources without trailing slash;
+ * Next adds slash when trailingSlash is true).
+ *
+ * Order matters: Next applies the first matching rule. Specific `/blog/…`
+ * aliases must come before the `/blog/:slug` catch-all.
+ */
 export const WORDPRESS_REDIRECTS: Array<{
   source: string
   destination: string
@@ -67,10 +86,7 @@ export const WORDPRESS_REDIRECTS: Array<{
   { source: '/free-estimate', destination: '/contact-us', permanent: true },
   { source: '/about', destination: '/', permanent: true },
   { source: '/faq', destination: '/', permanent: true },
-  { source: '/service-areas', destination: '/#service-areas', permanent: true },
-  // WordPress sometimes linked posts under /blog/…; live site serves at root
-  { source: '/blog/:slug', destination: '/:slug', permanent: true },
-  // Shortened blog paths (legacy redirects)
+  // Shortened blog paths (must precede /blog/:slug)
   {
     source: '/blog/how-to-choose-paint-color-walls-remodeling',
     destination: '/how-to-choose-a-paint-color-for-your-walls-when-remodeling',
@@ -91,6 +107,8 @@ export const WORDPRESS_REDIRECTS: Array<{
     destination: '/common-problems-you-might-encounter-when-remodeling',
     permanent: true,
   },
+  // WordPress sometimes linked posts under /blog/…; live site serves at root
+  { source: '/blog/:slug', destination: '/:slug', permanent: true },
   // WordPress author & feed archives (indexed, low value — point to blog)
   { source: '/author/admin-dev', destination: '/blog', permanent: true },
   { source: '/author/:path*', destination: '/blog', permanent: true },

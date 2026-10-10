@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Phone, Mail, MapPin, Facebook, Instagram } from 'lucide-react'
+import { Phone, Mail, MapPin, Facebook } from 'lucide-react'
 import { BUSINESS } from '@/lib/constants'
 
 export default function Footer() {
@@ -15,18 +15,13 @@ export default function Footer() {
             </p>
             <div className="flex gap-4">
               <a 
-                href="#" 
+                href={BUSINESS.social.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Facebook" 
                 className="text-gray-700 dark:text-gray-300 hover:text-[#DC2626] dark:hover:text-[#DC2626] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
               >
                 <Facebook className="h-5 w-5 sm:h-6 sm:w-6" />
-              </a>
-              <a 
-                href="#" 
-                aria-label="Instagram" 
-                className="text-gray-700 dark:text-gray-300 hover:text-[#DC2626] dark:hover:text-[#DC2626] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-              >
-                <Instagram className="h-5 w-5 sm:h-6 sm:w-6" />
               </a>
             </div>
           </div>
@@ -92,6 +87,14 @@ export default function Footer() {
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link 
+                  href="/service-areas" 
+                  className="text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-[#DC2626] dark:hover:text-[#DC2626] underline-offset-4 hover:underline transition-colors block py-1"
+                >
+                  Service Areas
+                </Link>
+              </li>
+              <li>
+                <Link 
                   href="/gallery" 
                   className="text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-[#DC2626] dark:hover:text-[#DC2626] underline-offset-4 hover:underline transition-colors block py-1"
                 >
@@ -155,9 +158,20 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-200 dark:border-white/10 mt-6 sm:mt-8 pt-6 sm:pt-8 text-center">
+        <div className="border-t border-gray-200 dark:border-white/10 mt-6 sm:mt-8 pt-6 sm:pt-8 text-center space-y-2">
           <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
             © {new Date().getFullYear()} {BUSINESS.name}. All rights reserved. | <span className="text-[#DC2626] dark:text-[#DC2626] font-semibold">Licensed & Insured</span>
+          </p>
+          <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+            Powered by{' '}
+            <a
+              href="https://slideindm.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#DC2626] dark:text-[#DC2626] font-semibold underline-offset-4 hover:underline"
+            >
+              Slide in Digital Marketing
+            </a>
           </p>
         </div>
       </div>

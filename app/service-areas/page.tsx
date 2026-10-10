@@ -1,141 +1,139 @@
 import Link from 'next/link'
-import ImageStrip from '@/components/ImageStrip'
 import { MapPin } from 'lucide-react'
-import { SERVICE_AREAS, BUSINESS } from '@/lib/constants'
+import ImageStrip from '@/components/ImageStrip'
+import { BreadcrumbSchema } from '@/components/Schema'
+import { BUSINESS } from '@/lib/constants'
+import { CITIES, REGIONAL_CITIES, citiesByState, cityPath } from '@/lib/locations'
 import { generateMetadata as genMeta } from '@/lib/seo'
 import { SITE_IMAGES } from '@/lib/site-assets'
+import { navLinkClass } from '@/lib/site-nav'
 
 export const metadata = genMeta({
-  title: 'Service Areas | Home Renovation in Fairless Hills, PA & Surrounding Areas',
-  description: `We serve homeowners throughout ${BUSINESS.baseLocation} and within ${BUSINESS.serviceRadius} miles. Kitchen remodeling, bathroom renovation, and more in PA & NJ.`,
+  title: 'Service Areas Within 25 Miles of Fairless Hills, PA',
+  description: `Local renovation pages for towns within 25 miles of Fairless Hills, PA. Kitchen, bath, basement, and addition work across Bucks County, PA and nearby Mercer County, NJ.`,
   path: '/service-areas',
-  keywords: ['service areas', 'home renovation areas', 'Fairless Hills remodeling'],
+  keywords: ['service areas Fairless Hills', 'Bucks County remodeling', 'home renovation near me PA NJ'],
 })
 
 export default function ServiceAreasPage() {
-  const paCities = SERVICE_AREAS.filter(city => city.includes('PA'))
-  const njCities = SERVICE_AREAS.filter(city => city.includes('NJ'))
-
-  const serviceTypes = [
-    'Kitchen Remodeling',
-    'Bathroom Renovation',
-    'Basement Finishing',
-    'Home Additions',
-    'Interior Renovations',
-  ]
+  const paCities = citiesByState('PA')
+  const njCities = citiesByState('NJ')
 
   return (
-    <section className="py-20 bg-white dark:bg-[#0f172a]">
+    <section className="bg-white py-16 dark:bg-[#0f172a] md:py-24">
+      <BreadcrumbSchema
+        items={[
+          { name: 'Home', path: '/' },
+          { name: 'Service Areas', path: '/service-areas' },
+        ]}
+      />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-            Our <span className="accent-red">Service Areas</span>
+        <nav className="mb-8 text-sm text-gray-600 dark:text-gray-400" aria-label="Breadcrumb">
+          <Link href="/" className={navLinkClass}>
+            Home
+          </Link>
+          <span className="mx-2">/</span>
+          <span className="font-medium text-gray-900 dark:text-white">Service Areas</span>
+        </nav>
+
+        <div className="mx-auto mb-12 max-w-3xl text-center">
+          <h1 className="mb-6 text-4xl font-bold text-gray-900 dark:text-white md:text-5xl">
+            Local renovation pages within <span className="text-[#DC2626]">25 miles</span>
           </h1>
-          <p className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
-            Based in <span className="accent-red font-semibold">{BUSINESS.baseLocation}</span>, we proudly serve homeowners within approximately <span className="accent-red font-semibold">{BUSINESS.serviceRadius} miles</span>{' '}
-            throughout <span className="accent-red font-semibold">Pennsylvania</span> and <span className="accent-red font-semibold">New Jersey</span>. Quality home renovation services you can trust.
+          <p className="text-xl text-gray-700 dark:text-gray-300">
+            We are based at {BUSINESS.address.full}. Each town below has its own page — permits, housing stock, and
+            drive distance from Fairless Hills — so you are not reading a copied homepage with the city name swapped.
           </p>
-          <ImageStrip
-            images={[SITE_IMAGES.hero, SITE_IMAGES.homeGallery[7], SITE_IMAGES.interiors[0], SITE_IMAGES.homeGallery[2]]}
-            className="mt-12 max-w-5xl mx-auto"
-            columnsClassName="grid-cols-2 md:grid-cols-4"
-            label="Projects across our service region"
-          />
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 mb-16">
+        <ImageStrip
+          images={[SITE_IMAGES.hero, SITE_IMAGES.homeGallery[7], SITE_IMAGES.interiors[0], SITE_IMAGES.homeGallery[2]]}
+          className="mx-auto mb-16 max-w-5xl"
+          columnsClassName="grid-cols-2 md:grid-cols-4"
+          label="Projects across our 25-mile service radius"
+        />
+
+        <div className="mb-16 grid gap-12 md:grid-cols-2">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
-              <MapPin className="h-8 w-8 accent-red" />
-              <span className="accent-red">Pennsylvania</span> Communities
+            <h2 className="mb-6 flex items-center gap-3 text-3xl font-bold text-gray-900 dark:text-white">
+              <MapPin className="h-8 w-8 text-[#DC2626]" />
+              Pennsylvania
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {paCities.map((city) => (
-                <div key={city} className="flex items-center gap-2">
-                  <div className="h-2 w-2 accent-red bg-[#DC2626] rounded-full" />
+                <li key={city.slug}>
                   <Link
-                    href={`/service-areas#${city.toLowerCase().replace(/,/g, '').replace(/\s+/g, '-')}`}
-                    className="text-gray-900 dark:text-gray-200 hover:accent-red hover:underline"
+                    href={cityPath(city.slug)}
+                    className="flex min-h-[52px] items-center justify-between rounded-lg border border-gray-200 px-3 py-2 text-gray-900 hover:border-[#DC2626] hover:text-[#DC2626] dark:border-gray-700 dark:text-gray-100"
                   >
-                    {city}
+                    <span>{city.label}</span>
+                    <span className="text-xs text-gray-500">{city.miles === 0 ? 'HQ' : `${city.miles} mi`}</span>
                   </Link>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
-
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
-              <MapPin className="h-8 w-8 accent-red" />
-              <span className="accent-red">New Jersey</span> Communities
+            <h2 className="mb-6 flex items-center gap-3 text-3xl font-bold text-gray-900 dark:text-white">
+              <MapPin className="h-8 w-8 text-[#DC2626]" />
+              New Jersey
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {njCities.map((city) => (
-                <div key={city} className="flex items-center gap-2">
-                  <div className="h-2 w-2 accent-red bg-[#DC2626] rounded-full" />
+                <li key={city.slug}>
                   <Link
-                    href={`/service-areas#${city.toLowerCase().replace(/,/g, '').replace(/\s+/g, '-')}`}
-                    className="text-gray-900 dark:text-gray-200 hover:accent-red hover:underline"
+                    href={cityPath(city.slug)}
+                    className="flex min-h-[52px] items-center justify-between rounded-lg border border-gray-200 px-3 py-2 text-gray-900 hover:border-[#DC2626] hover:text-[#DC2626] dark:border-gray-700 dark:text-gray-100"
                   >
-                    {city}
+                    <span>{city.label}</span>
+                    <span className="text-xs text-gray-500">{city.miles} mi</span>
                   </Link>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </div>
 
-        <div className="bg-gray-50 dark:bg-[#0f172a] rounded-lg p-8 mb-16">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 text-center">
-            <span className="accent-red">Services</span> We Offer in These Areas
+        <div className="mb-12 rounded-2xl bg-gray-50 p-8 dark:bg-[#111827]">
+          <h2 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white">
+            {CITIES.length} towns, each with its own URL
           </h2>
-          <div className="grid md:grid-cols-3 gap-4">
-            {serviceTypes.map((service) => (
-              <div key={service} className="flex items-center gap-2">
-                <div className="h-1.5 w-1.5 accent-red bg-[#DC2626] rounded-full" />
-                <span className="text-gray-900 dark:text-gray-200">{service}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {SERVICE_AREAS.slice(0, 6).map((city) => {
-            const citySlug = city.toLowerCase().replace(/,/g, '').replace(/\s+/g, '-')
-            return (
-              <div key={city} id={citySlug} className="bg-white dark:bg-[#0f172a] border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">{city}</h3>
-                <p className="text-gray-700 dark:text-gray-300 mb-4">
-                  Professional home renovation services in <span className="accent-red font-semibold">{city}</span>. We specialize in <span className="accent-red font-semibold">kitchen remodeling</span>, 
-                  <span className="accent-red font-semibold">bathroom renovation</span>, <span className="accent-red font-semibold">basement finishing</span>, and <span className="accent-red font-semibold">home additions</span>.
-                </p>
-                <Link
-                  href="/contact-us"
-                  className="accent-red hover:opacity-80 font-medium"
-                >
-                  Get Free Estimate →
+          <p className="mb-6 text-gray-700 dark:text-gray-300">
+            These pages exist so searchers in Levittown, Bristol, Trenton, and the rest of the 25-mile ring land on
+            content about their municipality — not a single homepage that lists every city as a dead link.
+          </p>
+          <ul className="grid gap-4 md:grid-cols-2">
+            {CITIES.map((city) => (
+              <li key={city.slug} className="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-[#0f172a]">
+                <Link href={cityPath(city.slug)} className="text-lg font-semibold text-[#DC2626] hover:underline">
+                  {city.label}
                 </Link>
-              </div>
-            )
-          })}
+                <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                  {city.county} · {city.miles === 0 ? 'shop location' : `${city.miles} miles`} · {city.jurisdiction}
+                </p>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <div className="text-center bg-[#f0f4f8] dark:bg-[#0f172a] rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            Don't See Your <span className="accent-red">City</span> Listed?
-          </h2>
-          <p className="text-gray-900 dark:text-gray-200 mb-6">
-            We may still serve your area! <span className="accent-red font-semibold">Contact us</span> to find out if we can help with your home renovation project.
+        <div className="rounded-2xl border border-dashed border-gray-300 p-8 text-center dark:border-gray-600">
+          <h2 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white">Outside the 25-mile ranking radius</h2>
+          <p className="mx-auto mb-4 max-w-2xl text-gray-700 dark:text-gray-300">
+            Allentown, Bethlehem, and Easton were on the old 70-mile list. They are farther than 25 miles, so they do
+            not get thin local landing pages. Contact us if you have a project there and we will tell you honestly
+            whether we can staff it.
+          </p>
+          <p className="text-sm text-gray-500">
+            {REGIONAL_CITIES.map((c) => `${c.label} (~${c.miles} mi)`).join(' · ')}
           </p>
           <Link
             href="/contact-us"
-            className="inline-block bg-gradient-to-r from-[#334e68] to-[#102a43] text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-colors"
+            className="mt-6 inline-flex rounded-lg bg-gradient-to-r from-[#334e68] to-[#102a43] px-6 py-3 font-medium text-white"
           >
-            Contact Us
+            Contact us
           </Link>
         </div>
       </div>
     </section>
   )
 }
-

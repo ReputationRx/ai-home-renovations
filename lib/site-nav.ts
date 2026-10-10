@@ -3,7 +3,8 @@
  * Use on the homepage and other surfaces so menus and CTAs stay visually aligned.
  */
 
-export const SPECIAL_OFFERS_HREF = '/elementor-landing-page-825'
+/** Paid-traffic and Special Offers destination (focused conversion page). */
+export const SPECIAL_OFFERS_HREF = '/get-quote'
 
 /** Desktop primary nav text links (Gallery, Blog, Contact, …) */
 export const navLinkClass =
@@ -56,6 +57,7 @@ export const navLinkClassBlock = `${navLinkClass} flex items-center text-sm sm:t
 /** Homepage quick jump links (same destinations as main nav, minus Home) */
 export const HOME_QUICK_LINKS = [
   { href: '/gallery', label: 'Gallery' },
+  { href: '/service-areas', label: 'Areas' },
   { href: '/blog', label: 'Blog' },
   { href: '/contact-us', label: 'Contact' },
   { href: '#services', label: 'Services' },

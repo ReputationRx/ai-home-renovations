@@ -1,12 +1,13 @@
 import Link from 'next/link'
 import { MapPin } from 'lucide-react'
-import { SERVICE_AREAS, BUSINESS } from '@/lib/constants'
+import { BUSINESS } from '@/lib/constants'
+import { citiesByState, cityPath } from '@/lib/locations'
 import { navInlineLinkArrow, navLinkClassBlock } from '@/lib/site-nav'
 import { darkCanvas } from '@/lib/surfaces'
 
 export default function ServiceAreas() {
-  const paCities = SERVICE_AREAS.filter(city => city.includes('PA'))
-  const njCities = SERVICE_AREAS.filter(city => city.includes('NJ'))
+  const paCities = citiesByState('PA')
+  const njCities = citiesByState('NJ')
 
   return (
     <section id="service-areas" className={`py-20 scroll-mt-20 bg-gray-50 ${darkCanvas}`}>
@@ -29,11 +30,11 @@ export default function ServiceAreas() {
             <div className="grid grid-cols-2 gap-2 sm:gap-3">
               {paCities.map((city) => (
                 <Link
-                  key={city}
-                  href="/#service-areas"
+                  key={city.slug}
+                  href={cityPath(city.slug)}
                   className={navLinkClassBlock}
                 >
-                  {city}
+                  {city.label}
                 </Link>
               ))}
             </div>
@@ -46,19 +47,19 @@ export default function ServiceAreas() {
             <div className="grid grid-cols-2 gap-2 sm:gap-3">
               {njCities.map((city) => (
                 <Link
-                  key={city}
-                  href="/#service-areas"
+                  key={city.slug}
+                  href={cityPath(city.slug)}
                   className={navLinkClassBlock}
                 >
-                  {city}
+                  {city.label}
                 </Link>
               ))}
             </div>
           </div>
         </div>
         <div className="mt-6 sm:mt-8 text-center">
-          <Link href="/#service-areas" className={`${navInlineLinkArrow} text-sm sm:text-base`}>
-            View All Service Areas →
+          <Link href="/service-areas" className={`${navInlineLinkArrow} text-sm sm:text-base`}>
+            View all 25-mile town pages →
           </Link>
         </div>
       </div>

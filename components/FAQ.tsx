@@ -32,7 +32,7 @@ const faqs = [
   },
   {
     question: 'What areas do you serve?',
-    answer: `We're based in Fairless Hills, PA and serve homeowners within approximately 70 miles, including areas in Pennsylvania and New Jersey. This includes Philadelphia, Allentown, Trenton, Princeton, and many surrounding communities.`,
+    answer: `We're based in Fairless Hills, PA and focus on homeowners within about 25 miles — Bucks County towns like Levittown, Bristol, Yardley, and Newtown, plus nearby Mercer County, NJ (Trenton, Hamilton, Princeton). Each of those towns has its own service-area page. Farther cities such as Allentown are outside that ranking radius; ask us if you have a project there.`,
   },
   {
     question: 'How do I get started?',

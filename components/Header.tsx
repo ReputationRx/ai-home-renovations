@@ -31,6 +31,7 @@ const SERVICE_LINKS = [
 const PRIMARY_LINKS = [
   { href: '/', label: 'Home' },
   { href: '/gallery', label: 'Gallery' },
+  { href: '/service-areas', label: 'Areas' },
   { href: '/blog', label: 'Blog' },
   { href: '/contact-us', label: 'Contact' },
 ] as const

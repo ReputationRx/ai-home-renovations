@@ -1,8 +1,11 @@
+import { CITY_LABELS } from './locations'
+
 export const BUSINESS = {
   name: 'AI Home Renovations',
+  alternateName: 'AI Home Renovation',
   phone: '+1 (267) 243-6125',
   phoneFormatted: '(267) 243-6125',
-  phoneRaw: '2672436125',
+  phoneRaw: process.env.NEXT_PUBLIC_PHONE_TRACKING || '2672436125',
   email: 'info@aihomerenovations.com',
   address: {
     street: '323 Austin Drive',
@@ -11,38 +14,20 @@ export const BUSINESS = {
     zip: '19030',
     full: '323 Austin Drive, Fairless Hills, PA 19030',
   },
-  serviceRadius: 70, // miles
+  /** Fairless Hills, PA — for LocalBusiness geo + GEO citations */
+  geo: {
+    latitude: '40.1790',
+    longitude: '-74.8550',
+  },
+  serviceRadius: 25, // miles — local ranking pages live under /service-areas/[city]
   baseLocation: 'Fairless Hills, PA',
+  social: {
+    facebook: 'https://www.facebook.com/AIHomeRenovations.PA/',
+  },
 } as const
 
-export const SERVICE_AREAS = [
-  // Pennsylvania
-  'Fairless Hills, PA',
-  'Bristol, PA',
-  'Levittown, PA',
-  'Morrisville, PA',
-  'Yardley, PA',
-  'Newtown, PA',
-  'Langhorne, PA',
-  'Bensalem, PA',
-  'Doylestown, PA',
-  'Warminster, PA',
-  'Southampton, PA',
-  'Philadelphia, PA',
-  'Allentown, PA',
-  'Bethlehem, PA',
-  'Easton, PA',
-  // New Jersey
-  'Trenton, NJ',
-  'Princeton, NJ',
-  'Lawrenceville, NJ',
-  'Hamilton, NJ',
-  'Ewing, NJ',
-  'Pennington, NJ',
-  'Hopewell, NJ',
-  'Lambertville, NJ',
-  'New Hope, PA',
-] as const
+/** Towns with dedicated local SEO pages (25-mile radius). */
+export const SERVICE_AREAS = CITY_LABELS
 
 export const SERVICES = {
   kitchens: {
