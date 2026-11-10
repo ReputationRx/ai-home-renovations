@@ -3,6 +3,8 @@
  * Canonical paths match Rank Math sitemap + WP REST API (2024-06).
  */
 
+import { INTERIOR_RENOVATIONS_AREA_PATH } from './constants'
+
 /** Category archives indexed on the live WordPress site. */
 export const WORDPRESS_CATEGORY_SLUGS = [
   'uncategorized',
@@ -34,6 +36,7 @@ export const WORDPRESS_CANONICAL_PATHS = [
   '/contact-us',
   '/privacy-policy',
   '/interiors',
+  INTERIOR_RENOVATIONS_AREA_PATH,
   '/additions',
   '/basements',
   '/bathrooms',

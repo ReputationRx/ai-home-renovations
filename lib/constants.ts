@@ -44,6 +44,9 @@ export const SERVICE_AREAS = [
   'New Hope, PA',
 ] as const
 
+/** Homepage interior card. Lists every city in SERVICE_AREAS and the published shop ZIP. */
+export const INTERIOR_RENOVATIONS_AREA_PATH = '/service-areas/interior-renovations' as const
+
 export const SERVICES = {
   kitchens: {
     slug: 'kitchens',

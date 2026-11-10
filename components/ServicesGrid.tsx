@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { ArrowRight } from 'lucide-react'
-import { SERVICES } from '@/lib/constants'
+import { INTERIOR_RENOVATIONS_AREA_PATH, SERVICES } from '@/lib/constants'
 import { motion } from 'framer-motion'
 import { MORE_SERVICES_IMAGES, SERVICE_CARD_IMAGES } from '@/lib/site-assets'
 import { navInlineLinkArrow } from '@/lib/site-nav'
@@ -15,18 +15,22 @@ export default function ServicesGrid() {
     {
       title: 'Flooring Installation & Refinishing',
       description: 'Hardwood, luxury vinyl plank, tile, and carpet installs with dust-controlled sanding and premium finishes.',
+      href: '/contact-us',
     },
     {
       title: 'Interior & Exterior Painting',
       description: 'Color consultation, drywall repair, trim, and whole-home repainting for a clean, elevated look.',
+      href: '/contact-us',
     },
     {
       title: 'Roofing & Siding',
       description: 'High-performance roofing, gutters, and siding replacements to protect and refresh your exterior.',
+      href: '/contact-us',
     },
     {
-      title: 'Windows & Doors',
-      description: 'Energy-efficient window and door replacements, weatherproofing, and elegant trim upgrades.',
+      title: 'Interior Renovations',
+      description: 'Living rooms, bedrooms, suites, and open-plan layouts—planned for how you actually live.',
+      href: INTERIOR_RENOVATIONS_AREA_PATH,
     },
   ]
 
@@ -124,7 +128,7 @@ export default function ServicesGrid() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed mb-4">{service.description}</p>
-                    <Link href="/contact-us" className={`${navInlineLinkArrow} gap-1`}>
+                    <Link href={service.href} className={`${navInlineLinkArrow} gap-1`}>
                       Schedule a consultation
                       <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
                     </Link>
